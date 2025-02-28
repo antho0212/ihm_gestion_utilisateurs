@@ -10,7 +10,7 @@ Gestion des niveaux d'accès des utilisateurs.
 Interface web conviviale : Une interface web intuitive pour faciliter la gestion des utilisateurs.
 Installation :
 
-Cloner le dépôt GitHub : git clone https://dictionnaire.lerobert.com/definition/depoter
+Cloner le dépôt GitHub : git clone https://github.com/antho0212/ihm_gestion_utilisateurs.git
 Installer les dépendances : Exécutez le fichier install-dependances.bat en double-cliquant dessus.
 Démarrer l'application : Exécutez le script principal.
 Accéder à l'interface web : Ouvrez votre navigateur et accédez à l'adresse http://127.0.0.1:5000.
