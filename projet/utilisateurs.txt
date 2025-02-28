@@ -1,0 +1,4 @@
+admin;admin;admin@example.com;00.00.00.00.00;nothing;pbkdf2:sha256:1000000$2yKq7OXoGEt6JC25$70437a25ea8b46e793ac2b09980589ed96184cb18c5b7bd94d694b4a2945ed51;admin
+polaszyk;anthony;polaszykanthony702@gmail.com;0641404940;nothing;pbkdf2:sha256:1000000$8j8JFqJdQO4G9xu6$c08144920a23728a1443b34081d1d159e9525ccd6a3bb5fbf4af1c9718f411bd;admin
+polaszyk;fabien;polaszyk.fabien@yahoo.fr;0611918484;DY-713-QW;pbkdf2:sha256:1000000$NkBQtw6wiiYD1LVe$fcc85ebb778af5182dfe9f4af2bf1bc533da8b4dbcb91a87ccdc37afa7d086e8;utilisateur
+henz;elena;henz.elena@gmail.com;0000000000;nothing;pbkdf2:sha256:1000000$j6KC0YXi1vEk0gEO$42a7d3b44f946379c5632582179198235999f02b1772df4ab17405a85956bb51;admin

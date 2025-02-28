@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Modifier un utilisateur</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="content-wrapper">
+        <h1 style="color: {{ couleur_texte }};">Modifier un utilisateur</h1>
+
+        <form method="POST" style="color: {{ couleur_texte }};">
+            <div class="form-row">
+                <label for="nom">Nom:</label>
+                <input type="text" name="nom" id="nom" value="{{ utilisateur.nom }}" required>
+            </div>
+            <div class="form-row">
+                <label for="prenom">Prénom:</label>
+                <input type="text" name="prenom" id="prenom" value="{{ utilisateur.prenom }}" required>
+            </div>
+            <div class="form-row">
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" value="{{ utilisateur.email }}" required>
+            </div>
+            <div class="form-row">
+                <label for="telephone">Téléphone:</label>
+                <input type="tel" name="telephone" id="telephone" value="{{ utilisateur.telephone }}">
+            </div>
+            <div class="form-row">
+                <label for="plaque">Plaque d'immatriculation:</label>
+                <input type="text" name="plaque" id="plaque" value="{{ utilisateur.plaque_immatriculation }}">
+            </div>
+            <div class="form-row">
+                <label for="mot_de_passe">Mot de passe:</label>
+                <input type="text" name="mot_de_passe" id="mot_de_passe">
+            </div>
+
+            {% if session['utilisateur_connecte']['role'] == 'admin' %}
+            <div class="form-row">
+                <label for="role">Rôle:</label>
+                <select name="role" id="role">
+                    <option value="admin" {% if utilisateur.role == 'admin' %}selected{% endif %}>Admin</option>
+                    <option value="utilisateur" {% if utilisateur.role == 'utilisateur' %}selected{% endif %}>Utilisateur</option>
+                </select>
+            </div>
+            {% endif %}
+
+            <button type="submit">Enregistrer</button>
+            <a href="{{ url_for('parametres') }}" class="button">Paramètres</a>
+        </form>
+
+        <a href="{{ url_for('index') }}" class="back-button">Retour au menu</a>
+    </div>  
+    <style>
+        body {
+            color: {{ couleur_texte }};
+        }
+
+        .alert-danger {
+            color: red;
+        }
+
+        .user-actions {
+            margin-bottom: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 15px;
+            margin-right: 10px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .user-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .user-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .color-list {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+        }
+
+        .color-list li {
+            width: 30px;
+            height: 30px;
+            margin-right: 5px;
+        }
+
+        .color-list button {
+            width: 100%;
+            height: 100%;
+            border: none;
+            cursor: pointer;
+        }
+
+        .back-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+        </style>
+</body>
+</html>

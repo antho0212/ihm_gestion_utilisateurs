@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Paramètres</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="content-wrapper">
+        <h1 style="color: {{ couleur_texte }};">Paramètres</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('parametres') }}" method="POST" enctype="multipart/form-data">
+            <label for="image_fond">Nouvelle image de fond :</label>
+            <input type="file" name="image_fond" id="image_fond">
+            <button type="submit">Changer l'image de fond</button>
+            {% if get_flashed_messages(category_filter=['success']) and 'image_fond' in request.files %}
+                <p>Pour voir le nouveau fond d'écran, veuillez faire ctrl+F5.</p>
+            {% endif %}
+        </form>
+
+        <form action="{{ url_for('parametres') }}" method="POST">
+            <label>Couleur du texte :</label>
+            <ul class="color-list">
+                {% for couleur in ["black", "white", "red", "green", "blue", "purple", "orange"] %}
+                <li style="background-color: {{ couleur }};">
+                    <button type="submit" name="couleur_texte" value="{{ couleur }}" style="background-color: {{ couleur }};"></button>
+                </li>
+                {% endfor %}
+            </ul>
+        </form>
+
+        <h2 style="color: {{ couleur_texte }};">Gestion des utilisateurs</h2>
+
+        <div class="user-actions">
+            <a href="{{ url_for('ajouter') }}" class="button">Ajouter un utilisateur</a>
+        </div>
+
+        <ul class="user-list" style="color: {{ couleur_texte }};">
+            {% for utilisateur in utilisateurs %}
+            <li class="user-item">
+                <strong>{{ utilisateur.prenom }} {{ utilisateur.nom }}</strong> - {{ utilisateur.email }}
+                <a href="{{ url_for('modifier', id=loop.index0) }}" class="button">Modifier</a>
+                <a href="{{ url_for('supprimer', id=loop.index0) }}" class="button">Supprimer</a>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <a href="{{ url_for('index') }}" class="back-button">Retour à l'accueil</a>
+    </div>
+
+    <style>
+        body {
+            color: {{ couleur_texte }};
+        }
+
+        .alert-danger {
+            color: red;
+        }
+
+        .user-actions {
+            margin-bottom: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 15px;
+            margin-right: 10px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .user-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .user-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .color-list {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+        }
+
+        .color-list li {
+            width: 30px;
+            height: 30px;
+            margin-right: 5px;
+        }
+
+        .color-list button {
+            width: 100%;
+            height: 100%;
+            border: none;
+            cursor: pointer;
+        }
+
+        .back-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</body>
+</html>

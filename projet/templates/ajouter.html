@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ajouter un utilisateur</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="content-wrapper">
+        <h1 style="color: {{ couleur_texte }};">Ajouter un utilisateur</h1>
+
+        <form method="POST" style="color: {{ couleur_texte }};">
+            <div class="form-row">
+                <label for="nom">Nom:</label>
+                <input type="text" name="nom" id="nom" required>
+            </div>
+            <div class="form-row">
+                <label for="prenom">Prénom:</label>
+                <input type="text" name="prenom" id="prenom" required>
+            </div>
+            <div class="form-row">
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" required>
+            </div>
+            <div class="form-row">
+                <label for="telephone">Téléphone:</label>
+                <input type="tel" name="telephone" id="telephone">
+            </div>
+            <div class="form-row">
+                <label for="plaque">Plaque d'immatriculation:</label>
+                <input type="text" name="plaque" id="plaque">
+            </div>
+            <div class="form-row">
+                <label for="mot_de_passe">Mot de passe:</label>
+                <input type="password" name="mot_de_passe" id="mot_de_passe" required>
+            </div>
+            <div class="form-row">
+                <label for="role">Rôle:</label>
+                <select name="role" id="role">
+                    <option value="admin">Admin</option>
+                    <option value="utilisateur">Utilisateur</option>
+                </select>
+            </div>
+
+            <button type="submit">Enregistrer</button>
+            <a href="{{ url_for('index') }}" class="back-button">Retour à l'accueil</a>
+        </form>
+    </div>
+</body>
+</html>

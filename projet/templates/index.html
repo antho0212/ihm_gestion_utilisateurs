@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gestion des utilisateurs</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="content-wrapper">
+        <h1 style="color: {{ couleur_texte }};">Liste des utilisateurs</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Email</th>
+                    <th>Téléphone</th>
+                    <th>Plaque</th>
+                    <th>Rank</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for utilisateur in utilisateurs %}
+                <tr>
+                    <td>{{ utilisateur.nom }}</td>
+                    <td>{{ utilisateur.prenom }}</td>
+                    <td>{{ utilisateur.email }}</td>
+                    <td>{{ utilisateur.telephone }}</td>
+                    <td>{{ utilisateur.plaque_immatriculation }}</td>
+                    <td>{{ utilisateur.role }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="user-actions">
+            <a href="{{ url_for('parametres') }}" class="button">Paramètres</a>
+            <a href="{% if 'utilisateur_connecte' in session %}{{ url_for('logout') }}{% else %}{{ url_for('login') }}{% endif %}" class="button">
+                {% if 'utilisateur_connecte' in session %}Déconnexion{% else %}Connexion{% endif %}
+            </a>
+        </div>
+    </div>
+
+    <style>
+        .alert-danger {
+            color: red;
+        }
+
+        .user-actions {
+            margin-bottom: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 15px;
+            margin-right: 10px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</body>
+</html>
