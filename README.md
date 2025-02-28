@@ -1,23 +1,40 @@
-bonjour ceci est une demo est a comme objectif de recevoir des critiques
+Ce projet présente une interface homme-machine (IHM) développée dans le cadre de mon BTS. Elle permet la gestion des utilisateurs d'un système de portail connecté avec détection de véhicules autorisés. L'IHM offre des fonctionnalités pour créer, modifier et supprimer des comptes utilisateurs, ainsi que pour gérer leurs niveaux d'accès.
 
-veuillez lancer le install-dependance.bat afin d installer automatiquement les librairie necaissaire (juste double cliquer)
+Fonctionnalités :
 
-l ip est = a l ip local + le port 5000 http://127.0.0.1:5000
+Gestion des utilisateurs :
+Création de nouveaux comptes utilisateurs.
+Modification des informations des utilisateurs existants.
+Suppression de comptes utilisateurs.
+Gestion des niveaux d'accès des utilisateurs.
+Interface web conviviale : Une interface web intuitive pour faciliter la gestion des utilisateurs.
+Installation :
 
-pour vous connectez la premiere fois il faut taper admin.admin avec comme mot de passe admin (je sait cela est tres securiser)
+Cloner le dépôt GitHub : git clone https://dictionnaire.lerobert.com/definition/depoter
+Installer les dépendances : Exécutez le fichier install-dependances.bat en double-cliquant dessus.
+Démarrer l'application : Exécutez le script principal.
+Accéder à l'interface web : Ouvrez votre navigateur et accédez à l'adresse http://127.0.0.1:5000.
+Configuration :
 
-baladez vous et essayez. toute critique est bonne a prendre =)
+Lors de la première connexion, utilisez les identifiants suivants :
+Identifiant : admin.admin
+Mot de passe : admin
+(Note : Pour des raisons de sécurité, il est fortement recommandé de modifier ces identifiants immédiatement après la première connexion.)
+Lors de la création de compte, l'identifiant est de la forme prénom.nom.
+Utilisation :
 
-pour terminer le script juste un ctrl + c et une validations (o)
+Explorez l'interface web pour gérer les comptes utilisateurs.
+Créez de nouveaux utilisateurs, modifiez les informations existantes et gérez leurs niveaux d'accès.
+Contribution :
 
-Lors de la creations de compte l identifiant est prenom.nom
+Ce projet est open source et vous êtes invités à le récupérer et à l'adapter à vos besoins. Les contributions sont les bienvenues. Le dépôt GitHub sera régulièrement mis à jour avec des améliorations et de nouvelles fonctionnalités.
 
-le projet a etait crée dans le cadre de mon projet de bts
+Arrêt de l'application :
 
-d ou la partie plaque d immatriculation
+Pour arrêter l'application, appuyez sur Ctrl + C dans la console et confirmez en saisissant o.
 
-le projet etant open source vous pouvez recuperer et adaptez a vos besoins
+Remarques :
 
-(projet cree un portail connecté qui s ouvre automatiquement lors de la detectionsd une voiture authorisé)
-
-le git sera mis a jour afin d etre ameliorer
+Ce projet a été développé à des fins éducatives et peut nécessiter des améliorations pour une utilisation en production.
+Pour toutes critiques et ammeliorations, n'hesitez pas a me les faires parvenir.
+Ce projet est la partie IHM de gestion des utilisateurs, pour un systeme de portail connecté.
