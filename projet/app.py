@@ -40,15 +40,17 @@ def ecrire_utilisateurs(utilisateurs):
         for utilisateur in utilisateurs:
             f.write(f"{utilisateur['nom']};{utilisateur['prenom']};{utilisateur['email']};{utilisateur['telephone']};{utilisateur['plaque_immatriculation']};{utilisateur['mot_de_passe']};{utilisateur['role']}\n")
 
-def lire_config():
+def lire_config_utilisateur(email):
+    fichier_config = f"config_{email}.ini"
     config = configparser.ConfigParser()
-    config.read(FICHIER_CONFIG)
+    config.read(fichier_config)
     if 'Couleurs' not in config:
         config['Couleurs'] = {}
     return config
 
-def ecrire_config(config):
-    with open(FICHIER_CONFIG, 'w') as configfile:
+def ecrire_config_utilisateur(email, config):
+    fichier_config = f"config_{email}.ini"
+    with open(fichier_config, 'w') as configfile:
         config.write(configfile)
 
 
@@ -74,8 +76,9 @@ def creer_utilisateur_par_defaut():
         ecrire_utilisateurs(utilisateurs)
 @app.before_request
 def avant_requete():
-    if 'couleur_texte' not in session:
-        config = lire_config()
+    if 'utilisateur_connecte' in session:
+        email = session['utilisateur_connecte']['email']
+        config = lire_config_utilisateur(email)
         couleur_texte = config.get('Couleurs', 'couleur_texte', fallback='black')
         session['couleur_texte'] = couleur_texte
 
@@ -226,12 +229,13 @@ def parametres():
         return redirect(url_for("login"))
 
     utilisateurs = lire_utilisateurs()
+    email = session['utilisateur_connecte']['email']
 
     if request.method == "POST":
         if 'image_fond' in request.files:
             image = request.files['image_fond']
             if image.content_type.startswith('image/'):
-                chemin_image = "static/images/fond.jpg"
+                chemin_image = f"static/images/fond_{email}.jpg"
                 image.save(chemin_image)
                 session['fond_cache_bust'] = str(time.time())
                 flash("Fond d'écran changé avec succès!", "success")
@@ -239,9 +243,9 @@ def parametres():
             couleur_texte = request.form['couleur_texte']
             session['couleur_texte'] = couleur_texte
 
-            config = lire_config()
+            config = lire_config_utilisateur(email)
             config.set('Couleurs', 'couleur_texte', couleur_texte)
-            ecrire_config(config)
+            ecrire_config_utilisateur(email, config)
 
             flash("Couleur du texte changée avec succès!", "success")
 
