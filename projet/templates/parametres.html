@@ -77,6 +77,12 @@
             text-decoration: none;
             border-radius: 5px;
         }
+        body {
+        background-image: url("{{ url_for('static', filename='images/fond_' + session['utilisateur_connecte']['email'] + '.jpg') }}");
+        background-size: cover;
+        background-repeat: no-repeat;
+        color: {{ session.get('couleur_texte', 'black') }};
+    }
 
         .button:hover {
             background-color: #0056b3;

@@ -27,5 +27,14 @@
             <button type="submit">Réinitialiser le mot de passe</button>
         </form>
     </div>
+
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='images/fond_' + session['utilisateur_connecte']['email'] + '.jpg') }}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            color: {{ session.get('couleur_texte', 'black') }};
+        }
+    </style>
 </body>
 </html>

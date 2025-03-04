@@ -49,5 +49,13 @@
             <a href="{{ url_for('index') }}" class="back-button">Retour à l'accueil</a>
         </form>
     </div>
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='images/fond_' + session['utilisateur_connecte']['email'] + '.jpg') }}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            color: {{ session.get('couleur_texte', 'black') }};
+        }
+    </style>
 </body>
 </html>
