@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Connexion</title>
+    <title>Mot de passe oublié</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="content-wrapper">
-        <h1 style="color: {{ couleur_texte }};">Connexion</h1>
+        <h1 style="color: {{ couleur_texte }};">Mot de passe oublié</h1>
 
-        {% if erreur %}
-        <p style="color: red;">{{ erreur }}</p>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <ul class="flashes">
+            {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
         {% endif %}
+        {% endwith %}
 
         <form method="POST" style="color: {{ couleur_texte }};">
             <div class="form-row">
                 <label for="nom_utilisateur">Nom d'utilisateur (prénom.nom):</label>
                 <input type="text" name="nom_utilisateur" id="nom_utilisateur" required>
             </div>
-            <div class="form-row">
-                <label for="mot_de_passe">Mot de passe:</label>
-                <input type="password" name="mot_de_passe" id="mot_de_passe" required>
-            </div>
 
-            <button type="submit">Se connecter</button>
-            <a href="{{ url_for('mot_de_passe_oublie') }}">Mot de passe oublié ?</a>
+            <button type="submit">Réinitialiser le mot de passe</button>
         </form>
     </div>
 </body>

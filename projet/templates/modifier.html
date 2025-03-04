@@ -30,8 +30,12 @@
                 <input type="text" name="plaque" id="plaque" value="{{ utilisateur.plaque_immatriculation }}">
             </div>
             <div class="form-row">
-                <label for="mot_de_passe">Mot de passe:</label>
-                <input type="text" name="mot_de_passe" id="mot_de_passe">
+                <label for="mot_de_passe">Nouveau mot de passe (laisser vide pour conserver l'ancien):</label>
+                <input type="password" name="mot_de_passe" id="mot_de_passe">
+            </div>
+            <div class="form-row">
+                <label for="confirmation_mot_de_passe">Confirmer le nouveau mot de passe:</label>
+                <input type="password" name="confirmation_mot_de_passe" id="confirmation_mot_de_passe">
             </div>
 
             {% if session['utilisateur_connecte']['role'] == 'admin' %}
@@ -49,7 +53,8 @@
         </form>
 
         <a href="{{ url_for('index') }}" class="back-button">Retour au menu</a>
-    </div>  
+    </div>
+
     <style>
         body {
             color: {{ couleur_texte }};

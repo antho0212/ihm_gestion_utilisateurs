@@ -2,12 +2,17 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
 import time
+import smtplib
+from email.mime.text import MIMEText
+import secrets
+import configparser
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 app.static_folder = 'static'
 
 FICHIER_UTILISATEURS = "utilisateurs.txt"
+FICHIER_CONFIG = "config.ini"
 
 def lire_utilisateurs():
     utilisateurs = []
@@ -35,6 +40,18 @@ def ecrire_utilisateurs(utilisateurs):
         for utilisateur in utilisateurs:
             f.write(f"{utilisateur['nom']};{utilisateur['prenom']};{utilisateur['email']};{utilisateur['telephone']};{utilisateur['plaque_immatriculation']};{utilisateur['mot_de_passe']};{utilisateur['role']}\n")
 
+def lire_config():
+    config = configparser.ConfigParser()
+    config.read(FICHIER_CONFIG)
+    if 'Couleurs' not in config:
+        config['Couleurs'] = {}
+    return config
+
+def ecrire_config(config):
+    with open(FICHIER_CONFIG, 'w') as configfile:
+        config.write(configfile)
+
+
 def creer_utilisateur_par_defaut():
     utilisateurs = lire_utilisateurs()
     admin_existe = False
@@ -55,10 +72,50 @@ def creer_utilisateur_par_defaut():
             "role": "admin"
         })
         ecrire_utilisateurs(utilisateurs)
+@app.before_request
+def avant_requete():
+    if 'couleur_texte' not in session:
+        config = lire_config()
+        couleur_texte = config.get('Couleurs', 'couleur_texte', fallback='black')
+        session['couleur_texte'] = couleur_texte
+
 
 with app.app_context():
     creer_utilisateur_par_defaut()
+def envoyer_email(destinataire, sujet, message):
+    expediteur = "btssnfourcade2@gmail.com"  # Remplacez par votre email
+    mot_de_passe_email = "wdkw adue hvub ikqm"  # Remplacez par votre mot de passe
 
+    msg = MIMEText(message)
+    msg["Subject"] = sujet
+    msg["From"] = expediteur
+    msg["To"] = destinataire
+
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as serveur:
+        serveur.login(expediteur, mot_de_passe_email)
+        serveur.send_message(msg)
+
+@app.route("/mot_de_passe_oublie", methods=["GET", "POST"])
+def mot_de_passe_oublie():
+    if request.method == "POST":
+        nom_utilisateur = request.form["nom_utilisateur"]
+        utilisateurs = lire_utilisateurs()
+        for utilisateur in utilisateurs:
+            if f"{utilisateur['prenom']}.{utilisateur['nom']}" == nom_utilisateur:
+                nouveau_mot_de_passe = secrets.token_urlsafe(16)
+                mot_de_passe_hache = generate_password_hash(nouveau_mot_de_passe, method='pbkdf2:sha256')
+                utilisateur['mot_de_passe'] = mot_de_passe_hache
+                ecrire_utilisateurs(utilisateurs)
+
+                sujet = "Réinitialisation de votre mot de passe"
+                message = f"Votre nouveau mot de passe est : {nouveau_mot_de_passe}"
+                envoyer_email(utilisateur['email'], sujet, message)
+
+                flash("Un email avec votre nouveau mot de passe a été envoyé.", "success")
+                return redirect(url_for("login"))
+
+        flash("Nom d'utilisateur introuvable.", "danger")
+    return render_template("mot_de_passe_oublie.html", couleur_texte=session.get('couleur_texte', 'black'))
 @app.route("/")
 def index():
     if 'utilisateur_connecte' not in session:
@@ -87,7 +144,12 @@ def ajouter():
         telephone = request.form["telephone"]
         plaque = request.form["plaque"]
         mot_de_passe = request.form["mot_de_passe"]
+        confirmation_mot_de_passe = request.form["confirmation_mot_de_passe"]
         role = request.form["role"]
+
+        if mot_de_passe != confirmation_mot_de_passe:
+            flash("Les mots de passe ne correspondent pas.", "danger")
+            return render_template("ajouter.html", couleur_texte=session.get('couleur_texte', 'black'))
 
         mot_de_passe_hache = generate_password_hash(mot_de_passe, method='pbkdf2:sha256')
 
@@ -127,8 +189,14 @@ def modifier(id):
         utilisateur_a_modifier["email"] = request.form["email"]
         utilisateur_a_modifier["telephone"] = request.form["telephone"]
         utilisateur_a_modifier["plaque_immatriculation"] = request.form["plaque"]
-        if request.form["mot_de_passe"]:
-            utilisateur_a_modifier["mot_de_passe"] = generate_password_hash(request.form["mot_de_passe"], method='pbkdf2:sha256')
+        mot_de_passe = request.form["mot_de_passe"]
+        confirmation_mot_de_passe = request.form["confirmation_mot_de_passe"]
+
+        if mot_de_passe:
+            if mot_de_passe != confirmation_mot_de_passe:
+                flash("Les mots de passe ne correspondent pas.", "danger")
+                return render_template("modifier.html", utilisateur=utilisateur_a_modifier, id=id, couleur_texte=session.get('couleur_texte', 'black'))
+            utilisateur_a_modifier["mot_de_passe"] = generate_password_hash(mot_de_passe, method='pbkdf2:sha256')
         if utilisateur_connecte['role'] == 'admin':
             utilisateur_a_modifier["role"] = request.form["role"]
         ecrire_utilisateurs(utilisateurs)
@@ -170,9 +238,14 @@ def parametres():
         elif 'couleur_texte' in request.form:
             couleur_texte = request.form['couleur_texte']
             session['couleur_texte'] = couleur_texte
+
+            config = lire_config()
+            config.set('Couleurs', 'couleur_texte', couleur_texte)
+            ecrire_config(config)
+
             flash("Couleur du texte changée avec succès!", "success")
 
-    return render_template("parametres.html", fond_cache_bust=session.get('fond_cache_bust'), couleur_texte=session.get('couleur_texte', 'black'), utilisateurs=utilisateurs)
+    return render_template("parametres.html", fond_cache_bust=session.get('fond_cache_bust'), couleur_texte=session.get('couleur_texte'), utilisateurs=utilisateurs)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

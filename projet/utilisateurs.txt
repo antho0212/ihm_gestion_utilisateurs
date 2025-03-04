@@ -1,1 +1,2 @@
 admin;admin;admin@example.com;00.00.00.00.00;nothing;pbkdf2:sha256:1000000$2yKq7OXoGEt6JC25$70437a25ea8b46e793ac2b09980589ed96184cb18c5b7bd94d694b4a2945ed51;admin
+polaszyk;anthony;polaszykanthony702@gmail.com;;;pbkdf2:sha256:1000000$qMm5vI6oDCUFLT85$e4a9beee56143743e0aa7cc1982aaa49db4ba66229ab09cb9d68fcc0df5820d4;admin
