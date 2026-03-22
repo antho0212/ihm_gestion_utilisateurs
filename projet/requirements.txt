@@ -1,4 +1,0 @@
-Flask
-Werkzeug
-secure-smtplib
-configparser
